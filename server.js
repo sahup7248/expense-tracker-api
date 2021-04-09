@@ -6,8 +6,8 @@ const   express = require("express"),
         LocalStrategy = require("passport-local").Strategy,
         User    = require("./models/user");
         
-// const loginRegisterRoutes = require('./routes/login-register'),
-//       indexRoutes         = require('./routes/index');
+const loginRegisterRoutes = require('./routes/loginRegister'),
+      indexRoutes         = require('./routes/indexRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,8 +32,8 @@ passport.deserializeUser(User.deserializeUser());
 // app.use(methodOverride("_method"));
 
 //Requring routes
-// app.use('/',indexRoutes);
-// app.use('/',loginRegisterRoutes);
+app.use('/',indexRoutes);
+app.use('/',loginRegisterRoutes);
 
 app.listen(port, error => {
   if (error) throw error;
