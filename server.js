@@ -3,8 +3,8 @@ const   express = require("express"),
         bodyParser = require("body-parser"),
         mongoose  = require("mongoose"),
         passport  = require("passport"),
-        LocalStrategy = require("passport-local").Strategy,
-        User    = require("./models/user");
+        localStrategy = require("passport-local").Strategy,
+        UserModel    = require("./models/user");
         
 const loginRegisterRoutes = require('./routes/loginRegister'),
       indexRoutes         = require('./routes/indexRoutes');
@@ -19,21 +19,64 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/expense-tracker
   useNewUrlParser: true
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use(
+  'signup',
+  new localStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password'
+    },
+    async (email, password, done) => {
+      try {
+        console.log(email, password)
+        const user = await UserModel.create({ email, password });
+        return done(null, user);
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+);
 
+passport.use(
+  'login',
+  new localStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password'
+    },
+    async (email, password, done) => {
+      try {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) {
+          return done(null, false, { message: 'User not found' });
+        }
+
+        const validate = await user.isValidPassword(password);
+
+        if (!validate) {
+          return done(null, false, { message: 'Wrong Password' });
+        }
+
+        return done(null, user, { message: 'Logged in Successfully' });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
 // app.use(methodOverride("_method"));
 
 //Requring routes
-app.use('/',indexRoutes);
-app.use('/',loginRegisterRoutes);
+// app.use('/',indexRoutes);
+app.use('/user',loginRegisterRoutes);
 
 app.listen(port, error => {
   if (error) throw error;
