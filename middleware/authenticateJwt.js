@@ -1,5 +1,4 @@
-const   express = require("express");
-
+const jwt = require("jsonwebtoken");
 const ACCESS_TOKEN_SECRET = "SECRET@123"
 
 const authenticateJWT = (req, res, next) => {

@@ -1,10 +1,10 @@
-const mongoose = require("mongoose"),
+const mongoose = require("mongoose");
 
 const DataSchema = new mongoose.Schema({
-    type: String,
+    type: {type: String, required:true},
     category: {type: String, required:true},
     amount: {type: Number, required:true},
-    date: {type: Date, required: true},
+    date: {type: String, required: true},
     user_id: {type: String,required: true},
 });
 
