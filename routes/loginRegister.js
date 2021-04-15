@@ -17,6 +17,7 @@ router.post(
             token
         });
       }catch (error) {
+        console.log(error)
         return next(error);
       }
     }

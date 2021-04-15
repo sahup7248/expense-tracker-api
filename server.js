@@ -73,8 +73,8 @@ passport.use(
 );
 
 //Requring routes
-app.use('/api/v001/data',indexRoutes);
-app.use('/api/v001/user',loginRegisterRoutes);
+app.use('/api/v001/data/',indexRoutes);
+app.use('/api/v001/user/',loginRegisterRoutes);
 
 app.listen(port, error => {
   if (error) throw error;
