@@ -19,7 +19,10 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/expense-tracker
 });
 
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
 app.use(cors());
 
 // app.use(passport.initialize());
@@ -33,7 +36,6 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        console.log(email, password)
         const user = await UserModel.create({ email, password });
         return done(null, user);
       } catch (error) {

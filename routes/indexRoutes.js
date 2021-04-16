@@ -24,7 +24,7 @@ router.post('/post', authenticateJWT,async function(req, res) {
             category: req.body.category,
             amount: req.body.amount,
             date: req.body.date,
-            user_id: req.body.userId,
+            user_id: req.body.user_id,
         }
         let newData = await Data.create(data);
         res.status(200).send(newData);

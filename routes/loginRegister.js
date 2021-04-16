@@ -12,8 +12,7 @@ router.post(
         const body = { _id: req.user._id, email: req.user.email };
         const token = jwt.sign({ user: body }, "SECRET@123");
         res.json({
-            message: 'Signup successful',
-            user: body,
+            body,
             token
         });
       }catch (error) {
