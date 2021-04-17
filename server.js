@@ -12,7 +12,7 @@ const loginRegisterRoutes = require('./routes/loginRegister'),
 const app = express();
 const port = process.env.PORT || 5000;
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/expense-tracker",{
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://admin:admin123@cluster0.afvpb.mongodb.net/userDataDB?retryWrites=true&w=majority",{
   useUnifiedTopology : true ,
   useCreateIndex: true,
   useNewUrlParser: true
