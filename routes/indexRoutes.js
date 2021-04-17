@@ -8,13 +8,13 @@ const express   = require("express"),
 
 router.get('/get', authenticateJWT,function(req, res) {
     let user_id = req.query.user_id;
-  Data.find({user_id},function(err,products){
-    if(err){
-        res.status(500).send({error: err});
-    } else {
-        res.status(200).send(products);
-    }
-  });
+    Data.find({user_id},function(err,products){
+        if(err){
+            res.status(500).send({error: err});
+        } else {
+            res.status(200).send(products);
+        }
+    });
 });
 
 router.post('/post', authenticateJWT,async function(req, res) {
@@ -25,12 +25,21 @@ router.post('/post', authenticateJWT,async function(req, res) {
             amount: req.body.amount,
             date: req.body.date,
             user_id: req.body.user_id,
-        }
+        };
         let newData = await Data.create(data);
         res.status(200).send(newData);
     }catch(err){
         res.status(500).send({error: err});
     }
 });
+
+router.delete('/delete', authenticateJWT, async function(req,res){
+    try{
+        let deletedData = await Data.deleteOne({_id: req.query.id});
+        res.status(200).send(deletedData);
+    }catch(err){
+        res.status(500).send({error: err});
+    }
+})
 
 module.exports = router;
